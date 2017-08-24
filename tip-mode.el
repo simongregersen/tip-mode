@@ -27,88 +27,58 @@
 
 ;; Installation:
 
-;;     (add-to-list 'auto-mode-alist '("\\.tip\\'" . tip-mode))
+;; (load-file "~/path/to/tip-mode.el")
+;; (add-to-list 'auto-mode-alist '("\\.tip\\'" . tip-mode))
 
 ;;; Code:
 
-(defgroup tip nil
-  "TIP code editing commands for Emacs."
-  :prefix "tip-"
-  :group 'languages)
-
 (defconst tip-font-lock-keywords
-  `(
-    ;; Keywords.
-    ("\\<\\(if\\|else\\|while\\|return\\|input\\|output\\|var\\)\\>"
-     (1 font-lock-keyword-face))
+  `((
+     ;; Keywords.
+     ("\\<\\(if\\|else\\|while\\|return\\|input\\|output\\|var\\)\\>"
+      (1 font-lock-keyword-face))
 
-    ;; Variable declarations.
-    ("\\<var\\s-+\\([a-zA-Z]\\(\\w\\|_\\)*\\)\\s-*"
-     (1 font-lock-variable-name-face))
+     ;; Variable declarations.
+     ("\\<var\\s-+\\([a-zA-Z]\\(\\w\\|_\\)*\\)\\s-*"
+      (1 font-lock-variable-name-face))
 
-    ;; Variable assignment.
-    ("\\<\\([a-zA-Z]\\(\\w\\|_\\)*\\)\\s-*="
-     (1 font-lock-variable-name-face))
+     ;; Variable assignment.
+     ("\\<\\([a-zA-Z]\\(\\w\\|_\\)*\\)\\s-*="
+      (1 font-lock-variable-name-face))
 
-    ;; Function declarations.
-    ("\\<\\([a-zA-Z]\\(\\w\\|_\\)*\\)\\s-*(.*)\\s-*{"
-     (1 font-lock-function-name-face))
+     ;; Function declarations.
+     ("\\<\\([a-zA-Z]\\(\\w\\|_\\)*\\)\\s-*(.*)\\s-*{"
+      (1 font-lock-function-name-face))
 
-    ;; Function call.
-    ("\\([a-zA-Z]\\(\\w\\|_\\)*\\)("
-     (1 font-lock-function-name-face))
+     ;; Function call.
+     ("\\([a-zA-Z]\\(\\w\\|_\\)*\\)("
+      (1 font-lock-function-name-face))
 
-    ;; Pointers.
-    ("\\(*\\|&\\)"
-     (1 font-lock-negation-char-face))
-    ("\\(null\\)"
-     (1 font-lock-constant-face))
-    ("\\<\\(malloc\\)\\>"
-     (1 font-lock-builtin-face))
+     ;; Pointers.
+     ("\\(*\\|&\\)"
+      (1 font-lock-negation-char-face))
+     ("\\(null\\)"
+      (1 font-lock-constant-face))
+     ("\\<\\(malloc\\)\\>"
+      (1 font-lock-builtin-face))
 
-    ;; Integers.
-    ("\\([0-9]*\\)"
-     (1 font-lock-constant-face))
+     ;; Integers.
+     ("\\([0-9]*\\)"
+      (1 font-lock-constant-face))
 
-    ;; Binary operators.
-    ("\\(+\\|-\\|*\\|/\\|>\\|==\\)"
-     (1 font-lock-negation-char-face))
+     ;; Binary operators.
+     ("\\(+\\|-\\|*\\|/\\|>\\|==\\)"
+      (1 font-lock-negation-char-face))
 
-    )
-  "Expressions to highlight in TIP modes.")
+     ))
+  "Expressions to highlight in TIP mode.")
 
-(defcustom tip-mode-hook nil
-  "*Hook called by `tip-mode'."
-  :type 'hook
-  :group 'tip)
+(defconst tip-tab-width 4)
 
-(defvar tip-mode-syntax-table nil
-  "Syntax table used in TIP mode.")
-
-(defvar tip-mode-map nil
-  "Keymap for `tip-mode'.")
-
-(defun tip-mode ()
-  "Major mode for editing TIP programs."
-  (interactive)
-
-  (kill-all-local-variables)
-  (setq major-mode 'tip-mode)
-  (setq mode-name "TIP")
-
-  (setq tip-mode-map (make-sparse-keymap))
-  (use-local-map tip-mode-map)
-
-  (set (make-local-variable 'font-lock-defaults)
-       '(tip-font-lock-keywords nil nil))
-
-  (setq tip-mode-syntax-table (make-syntax-table))
-  (set-syntax-table tip-mode-syntax-table)
-
-  (set (make-local-variable 'comment-start) "/*")
-  (set (make-local-variable 'comment-end) "*/")
-
-  (run-hooks 'tip-mode-hook))
+(define-derived-mode tip-mode c-mode "TIP"
+  "Major mode for editing TIP (Tiny Imperative Programming Language"
+  (setq tab-width tip-tab-width)
+  (setq font-lock-defaults tip-font-lock-keywords))
 
 (provide 'tip-mode)
 
