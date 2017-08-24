@@ -1,5 +1,7 @@
 ;;; tip-mode.el --- Mode for editing programs written in TIP (Tiny Imperative Programming Language)
 
+;; MIT License
+
 ;; Copyright (C) 2017 Simon Gregersen <gregersen@cs.au.dk>
 
 ;; Author: Simon Gregersen <gregersen@cs.au.dk>
@@ -27,8 +29,8 @@
 
 ;; Installation:
 
-;; (load-file "~/path/to/tip-mode.el")
-;; (add-to-list 'auto-mode-alist '("\\.tip\\'" . tip-mode))
+;;   (load-file "~/path/to/tip-mode.el")
+;;   (add-to-list 'auto-mode-alist '("\\.tip\\'" . tip-mode))
 
 ;;; Code:
 
@@ -36,7 +38,7 @@
   `((
      ;; Keywords.
      ("\\<\\(if\\|else\\|while\\|return\\|input\\|output\\|var\\)\\>"
-      (1 font-lock-keyword-face))
+      . font-lock-keyword-face)
 
      ;; Variable declarations.
      ("\\<var\\s-+\\([a-zA-Z]\\(\\w\\|_\\)*\\)\\s-*"
@@ -55,20 +57,20 @@
       (1 font-lock-function-name-face))
 
      ;; Pointers.
-     ("\\(*\\|&\\)"
-      (1 font-lock-negation-char-face))
-     ("\\(null\\)"
-      (1 font-lock-constant-face))
-     ("\\<\\(malloc\\)\\>"
-      (1 font-lock-builtin-face))
+     ("*\\|&"
+      . font-lock-negation-char-face)
+     ("\\<null\\>"
+      . font-lock-constant-face)
+     ("\\<malloc\\>"
+      . font-lock-builtin-face)
 
      ;; Integers.
-     ("\\([0-9]*\\)"
-      (1 font-lock-constant-face))
+     ("[0-9]*"
+      . font-lock-constant-face)
 
      ;; Binary operators.
-     ("\\(+\\|-\\|*\\|/\\|>\\|==\\)"
-      (1 font-lock-negation-char-face))
+     ("+\\|-\\|*\\|/\\|>\\|=="
+      . font-lock-negation-char-face)
 
      ))
   "Expressions to highlight in TIP mode.")
@@ -76,7 +78,7 @@
 (defconst tip-tab-width 4)
 
 (define-derived-mode tip-mode c-mode "TIP"
-  "Major mode for editing TIP (Tiny Imperative Programming Language"
+  "Major mode for editing TIP (Tiny Imperative Programming Language)"
   (setq tab-width tip-tab-width)
   (setq font-lock-defaults tip-font-lock-keywords))
 
